@@ -49,8 +49,6 @@ export const deleteEvent = async (id) => {
   return res.json();
 };
 
-
-
 // ======================
 // CLUBS API (for dropdown)
 // ======================
