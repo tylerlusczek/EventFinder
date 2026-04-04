@@ -1,3 +1,9 @@
+function formatDate(str) {
+  if (!str) return "";
+  const d = new Date(str);
+  return d.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
+}
+
 export default function EventList({ events, onDelete, onEdit }) {
   return (
     <div className="table-container">
@@ -26,8 +32,8 @@ export default function EventList({ events, onDelete, onEdit }) {
               <td>{event.description}</td>
               <td>{event.location}</td>
               <td>{event.capacity}</td>
-              <td>{event.date}</td>
-              <td>{event.end_time}</td>
+              <td>{formatDate(event.date)}</td>
+              <td>{formatDate(event.end_time)}</td>
               <td>{event.club_name}</td>
               <td>
                 <button onClick={() => onEdit(event)}>Edit</button>

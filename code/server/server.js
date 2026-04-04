@@ -13,9 +13,9 @@ app.use(express.json());
 const db = mysql.createPool({
   host: "localhost",
   user: "root",       // your MySQL username
-  password: "password",
+  password: "1234",
   database: "EventFinder",
-  port: 3307,
+  port: 3306,
 });
 
 db.getConnection((err, conn) => {
