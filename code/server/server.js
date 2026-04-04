@@ -75,11 +75,13 @@ app.put("/events/:id", (req, res) => {
 // DELETE event
 app.delete("/events/:id", (req, res) => {
   const { id } = req.params;
-  const sql = "DELETE FROM Event WHERE event_id = ?";
-  db.query(sql, [id], (err, result) => {
+  db.query("DELETE FROM EventRegistration WHERE event_id = ?", [id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
-    if (result.affectedRows === 0) return res.status(404).json({ error: "Event not found" });
-    res.json({ message: "Deleted successfully" });
+    db.query("DELETE FROM Event WHERE event_id = ?", [id], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (result.affectedRows === 0) return res.status(404).json({ error: "Event not found" });
+      res.json({ message: "Deleted successfully" });
+    });
   });
 });
 

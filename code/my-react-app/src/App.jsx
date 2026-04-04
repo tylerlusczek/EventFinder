@@ -55,7 +55,7 @@ export default function App() {
 
     return (
     <div className="container">
-      <h1>🎉 Event Finder</h1>
+      <h1 style={{ color: "#007BFF" }}>Event Finder</h1>
 
       {/* Form Header */}
       <h2 className="section-header">Add / Edit Event</h2>

@@ -11,6 +11,10 @@ body {
   margin: 0 auto;
 }
 
+.container h1 {
+  color: #007BFF !important;
+}
+
 /* Section headers */
 .section-header {
   font-size: 1.2rem;
