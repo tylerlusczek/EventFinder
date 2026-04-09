@@ -39,15 +39,19 @@ npm init -y
 npm install express mysql2 cors
 ```
 
-Now edit server.js with your own MySQL credentials:
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "YOUR_DB_USER",
-  password: "YOUR_DB_PASSWORD",
-  database: "EventFinder",
-});
+Now edit server.js with your own MySQL credentials by using environmental variables.
 
-(Currently, I have mine in their, also edit the port if you used 3306 because I used 3307)
+First when in the db/server folder, create a new file named '.env'
+Inside '.env' create the following varaibles
+DB_USER =  "user"
+DB_PASS = "pass"
+DB = "db"
+
+where you replace the text inside the "" with your actual user, pass, and database name.
+
+NOTE: Make sure the .env is in the .gitignore so no one else can see it
+
+(Also, might need to change the port in server.js as I have mine as 3307)
 
 Then you can start backend server:
 ```bash

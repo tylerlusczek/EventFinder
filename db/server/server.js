@@ -12,10 +12,10 @@ app.use(express.json());
 // Connect to MySQL
 const db = mysql.createPool({
   host: "localhost",
-  user: "root",       // your MySQL username
-  password: "1234",
-  database: "EventFinder",
-  port: 3306,
+  user: process.env.DB_USER,       //MySQL username
+  password: process.env.DB_PASS,   //MySQL password
+  database: process.env.DB,        //MySQL database name
+  port: 3307,
 });
 
 db.getConnection((err, conn) => {
