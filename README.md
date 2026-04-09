@@ -1,4 +1,4 @@
 # EventFinder
 Project for CS 4604
 
-Head to the frontend-backend/my-react-app/README.md to learn how to run the project
+Head to the frontend-backend/README.md to learn how to run the project
