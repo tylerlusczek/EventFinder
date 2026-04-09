@@ -24,14 +24,14 @@ You are going to want to download MySQL Workbench with the following link: https
 
 (NOTE: Make sure to remember the port and password you use)
 
-After you install and make a SQL Database, use the file in sql/event_finder.sql to import your data in the Workbench.
+After you install and make a SQL Database, use the file in db/event_finder.sql to import your data in the Workbench.
 
 Before moving on, make sure it is running and take note of the port and password
 
 ### **4. Database Connection**
 Navigate to the server folder
 ```bash
-cd server
+cd ../db/server
 ```
 and do the following:
 ```bash
@@ -59,7 +59,7 @@ node server.js
 ### **4. Frontend Connection**
 Open another tab and
 ```bash
-cd ../my-react-app
+cd ../frontend-backend/my-react-app
 npm install
 npm run dev
 ```

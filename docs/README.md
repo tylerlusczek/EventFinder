@@ -1,0 +1,1 @@
+Diagrams, screenshots, and report-related materials
