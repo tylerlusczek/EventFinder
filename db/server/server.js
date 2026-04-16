@@ -199,7 +199,14 @@ app.delete("/events/:id", authenticateToken, (req, res) => {
 });
 
 app.get("/clubs", authenticateToken, (req, res) => {
-  const sql = `SELECT oc.org_id AS id, oc.org_name AS name, CASE WHEN m.student_id IS NOT NULL THEN 1 ELSE 0 END AS is_member FROM OrganizationClub oc LEFT JOIN Membership m ON oc.org_id = m.org_id AND m.student_id = ?`;
+  const sql = `SELECT 
+  oc.org_id AS id,
+  oc.org_name AS name,
+  (m.student_id IS NOT NULL) AS is_member
+  FROM OrganizationClub oc
+  LEFT JOIN Membership m 
+  ON oc.org_id = m.org_id 
+ AND m.student_id = ?;`;
   db.query(sql, [req.user.id], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
