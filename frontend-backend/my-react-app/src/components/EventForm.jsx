@@ -29,7 +29,7 @@ export default function EventForm({ onSubmit, selectedEvent }) {
  useEffect(() => {
   if (selectedEvent) {
     setForm({
-      title: selectedEvent.name || "",
+      title: selectedEvent.name || selectedEvent.title || "",
       description: selectedEvent.description || "",
       location: selectedEvent.location || "",
       capacity: selectedEvent.capacity || "",

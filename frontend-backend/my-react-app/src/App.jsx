@@ -1,15 +1,40 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import EventForm from "./components/EventForm";
 import EventList from "./components/EventList";
+import ClubList from "./components/ClubList";
+import YourEventsList from "./components/YourEventsList";
+import AccountInfo from "./components/AccountInfo";
+import AuthPanel from "./components/AuthPanel";
 import "./app.css";
-import { getEvents, createEvent, updateEvent, deleteEvent } from "./api";
+import {
+  getEvents,
+  getClubs,
+  getMyEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  login,
+  signup,
+  changePassword,
+  joinClub,
+  leaveClub,
+  rsvpEvent,
+  cancelRsvp,
+} from "./api";
 
 export default function App() {
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  });
+  const [authMessage, setAuthMessage] = useState("");
+  const [currentTab, setCurrentTab] = useState("events");
   const [events, setEvents] = useState([]);
+  const [clubs, setClubs] = useState([]);
+  const [myEvents, setMyEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [message, setMessage] = useState("");
 
-  // Load events from backend
   const loadEvents = async () => {
     try {
       const data = await getEvents();
@@ -19,11 +44,84 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    loadEvents();
-  }, []);
+  const loadClubs = async () => {
+    try {
+      const data = await getClubs();
+      setClubs(data);
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
 
-  const handleSubmit = async (event) => {
+  const loadMyEvents = async () => {
+    try {
+      const data = await getMyEvents();
+      setMyEvents(data);
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      loadEvents();
+      loadClubs();
+      loadMyEvents();
+    }
+  }, [user]);
+
+  const handleLogin = async (credentials) => {
+    try {
+      const response = await login(credentials);
+      localStorage.setItem("auth_token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      setUser(response.user);
+      setAuthMessage("Login successful");
+      setMessage("");
+    } catch (err) {
+      setAuthMessage(err.message);
+      throw err;
+    }
+  };
+
+  const handleSignup = async (newUser) => {
+    try {
+      const response = await signup(newUser);
+      localStorage.setItem("auth_token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      setUser(response.user);
+      setAuthMessage("Account created successfully");
+      setMessage("");
+    } catch (err) {
+      setAuthMessage(err.message);
+      throw err;
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
+    setUser(null);
+    setAuthMessage("Logged out successfully");
+    setCurrentTab("events");
+    setEvents([]);
+    setClubs([]);
+    setMyEvents([]);
+    setSelectedEvent(null);
+    setMessage("");
+  };
+
+  const handlePasswordChange = async (payload) => {
+    try {
+      await changePassword(payload);
+      setAuthMessage("Password updated successfully");
+    } catch (err) {
+      setAuthMessage(err.message);
+      throw err;
+    }
+  };
+
+  const handleCreateOrUpdateEvent = async (event) => {
     try {
       if (selectedEvent) {
         await updateEvent(selectedEvent.id, event);
@@ -34,6 +132,7 @@ export default function App() {
       }
       setSelectedEvent(null);
       loadEvents();
+      loadMyEvents();
     } catch (err) {
       setMessage(err.message);
     }
@@ -43,7 +142,9 @@ export default function App() {
     try {
       await deleteEvent(id);
       setMessage("Event deleted successfully");
+      setSelectedEvent(null);
       loadEvents();
+      loadMyEvents();
     } catch (err) {
       setMessage(err.message);
     }
@@ -51,27 +152,127 @@ export default function App() {
 
   const handleEdit = (event) => {
     setSelectedEvent(event);
+    setCurrentTab("events");
   };
 
+  const handleJoinClub = async (orgId) => {
+    try {
+      await joinClub(orgId);
+      setMessage("Club joined successfully");
+      loadClubs();
+      loadEvents(); // Reload events since membership changed
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  const handleLeaveClub = async (orgId) => {
+    try {
+      await leaveClub(orgId);
+      setMessage("Club left successfully");
+      loadClubs();
+      loadEvents(); // Reload events since membership changed
+      loadMyEvents();
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  const handleRsvp = async (eventId) => {
+    try {
+      await rsvpEvent(eventId);
+      setMessage("RSVP saved successfully");
+      loadMyEvents();
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  const handleCancelRsvp = async (eventId) => {
+    try {
+      await cancelRsvp(eventId);
+      setMessage("RSVP cancelled successfully");
+      loadMyEvents();
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  if (!user) {
     return (
-    <div className="container">
-      <h1 style={{ color: "#007BFF" }}>Event Finder</h1>
-
-      {/* Form Header */}
-      <h2 className="section-header">Add / Edit Event</h2>
-      <EventForm onSubmit={handleSubmit} selectedEvent={selectedEvent} />
-
-      <p>{message}</p>
-
-      {/* Table Header */}
-      <h2 className="section-header">Event List</h2>
-      <div className="table-container">
-        <EventList
-          events={events}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
+      <div className="auth-page">
+        <AuthPanel
+          user={user}
+          onLogin={handleLogin}
+          onSignup={handleSignup}
+          onLogout={handleLogout}
+          onPasswordChange={handlePasswordChange}
+          authMessage={authMessage}
         />
       </div>
+    );
+  }
+
+  const registeredEventIds = new Set(myEvents.map((event) => event.id));
+  const rsvpStatusById = Object.fromEntries(myEvents.map((event) => [event.id, event.rsvp_status]));
+
+  return (
+    <div className="container">
+      <header className="top-header">
+        <div>
+          <h1>Event Finder</h1>
+          <p>Welcome, {user.first_name}</p>
+        </div>
+        <div className="header-actions">
+          <button type="button" className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <nav className="top-nav">
+        <button className={currentTab === "clubs" ? "active" : ""} onClick={() => setCurrentTab("clubs")}>Clubs</button>
+        <button className={currentTab === "events" ? "active" : ""} onClick={() => setCurrentTab("events")}>Events</button>
+        <button className={currentTab === "your-events" ? "active" : ""} onClick={() => setCurrentTab("your-events")}>Your Events</button>
+        <button className={currentTab === "account" ? "active" : ""} onClick={() => setCurrentTab("account")}>Account</button>
+      </nav>
+
+      {message && <p className="info-message">{message}</p>}
+      {authMessage && <p className="info-message">{authMessage}</p>}
+
+      {currentTab === "clubs" && <ClubList clubs={clubs} onJoin={handleJoinClub} onLeave={handleLeaveClub} />}
+
+      {currentTab === "events" && (
+        <>
+          <h2 className="section-header">Create / Edit Event</h2>
+          <EventForm onSubmit={handleCreateOrUpdateEvent} selectedEvent={selectedEvent} />
+          <h2 className="section-header">All Events</h2>
+          <EventList
+            events={events}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            currentUserId={user.id}
+            onRsvp={handleRsvp}
+            onCancelRsvp={handleCancelRsvp}
+            registeredEventIds={registeredEventIds}
+            rsvpStatusById={rsvpStatusById}
+          />
+        </>
+      )}
+
+      {currentTab === "your-events" && (
+        <YourEventsList
+          events={myEvents}
+          currentUserId={user.id}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onCancelRsvp={handleCancelRsvp}
+        />
+      )}
+
+      {currentTab === "account" && (
+        <AccountInfo user={user} onPasswordChange={handlePasswordChange} authMessage={authMessage} />
+      )}
     </div>
   );
 }

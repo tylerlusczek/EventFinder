@@ -129,3 +129,117 @@ button:hover {
     font-size: 13px;
   }
 }
+.auth-panel {
+  margin-bottom: 20px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.password-card {
+  margin-top: 18px;
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+
+.link-button,
+.logout-button {
+  background: transparent;
+  color: #007BFF;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 0;
+  text-decoration: underline;
+}
+
+..info-message {
+  color: #2a6f2f;
+  margin-top: 12px;
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #fff;
+  padding: 18px 22px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.top-header h1 {
+  margin: 0;
+}
+
+.top-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.top-nav button {
+  border: 1px solid #007BFF;
+  background: transparent;
+  color: #007BFF;
+  padding: 10px 18px;
+  border-radius: 8px;
+}
+
+.top-nav button.active,
+.top-nav button:hover {
+  background: #007BFF;
+  color: #fff;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.full-screen-auth {
+  width: 100%;
+  max-width: 450px;
+}
+
+.club-list-card,
+.your-events-card,
+.account-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.profile-block {
+  margin-bottom: 18px;
+}
+
+.logout-button {
+  background: #dc3545;
+  color: #fff;
+}
+
+.logout-button:hover {
+  background: #c82333;
+}
+
+.leave-button {
+  background: #dc3545;
+  color: #fff;
+}
+
+.leave-button:hover {
+  background: #c82333;
+}
+

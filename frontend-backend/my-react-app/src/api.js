@@ -1,61 +1,151 @@
-const API_BASE = "http://localhost:5000";
+﻿const API_BASE = "http://localhost:5000";
 
-// ======================
-// EVENTS API
-// ======================
-
-// GET all events
-export const getEvents = async () => {
-  const res = await fetch(`${API_BASE}/events`);
-  if (!res.ok) throw new Error("Failed to fetch events");
-  return res.json();
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("auth_token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-// CREATE event
+const handleResponse = async (res) => {
+  const data = await res.json().catch(() => null);
+  if (!res.ok) {
+    throw new Error(data?.error || "Request failed");
+  }
+  return data;
+};
+
+export const signup = async (user) => {
+  const res = await fetch(`${API_BASE}/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+  return handleResponse(res);
+};
+
+export const login = async (credentials) => {
+  const res = await fetch(`${API_BASE}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+  return handleResponse(res);
+};
+
+export const changePassword = async (payload) => {
+  const res = await fetch(`${API_BASE}/change-password`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+};
+
+export const getClubs = async () => {
+  const res = await fetch(`${API_BASE}/clubs`, {
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
+export const joinClub = async (orgId) => {
+  const res = await fetch(`${API_BASE}/clubs/${orgId}/join`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
+export const leaveClub = async (orgId) => {
+  const res = await fetch(`${API_BASE}/clubs/${orgId}/join`, {
+    method: "DELETE",
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
+export const getEvents = async () => {
+  const res = await fetch(`${API_BASE}/events`, {
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
+export const getMyEvents = async () => {
+  const res = await fetch(`${API_BASE}/my-events`, {
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
 export const createEvent = async (event) => {
   const res = await fetch(`${API_BASE}/events`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(event),
   });
-
-  if (!res.ok) throw new Error("Failed to create event");
-  return res.json();
+  return handleResponse(res);
 };
 
-// UPDATE event
 export const updateEvent = async (id, event) => {
   const res = await fetch(`${API_BASE}/events/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(event),
   });
-
-  if (!res.ok) throw new Error("Failed to update event");
-  return res.json();
+  return handleResponse(res);
 };
 
-// DELETE event
 export const deleteEvent = async (id) => {
   const res = await fetch(`${API_BASE}/events/${id}`, {
     method: "DELETE",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
-
-  if (!res.ok) throw new Error("Failed to delete event");
-  return res.json();
+  return handleResponse(res);
 };
 
-// ======================
-// CLUBS API (for dropdown)
-// ======================
+export const rsvpEvent = async (eventId) => {
+  const res = await fetch(`${API_BASE}/events/${eventId}/rsvp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({ rsvp_status: "Going" }),
+  });
+  return handleResponse(res);
+};
 
-// GET all clubs
-export const getClubs = async () => {
-  const res = await fetch(`${API_BASE}/clubs`);
-  if (!res.ok) throw new Error("Failed to fetch clubs");
-  return res.json();
+export const cancelRsvp = async (eventId) => {
+  const res = await fetch(`${API_BASE}/events/${eventId}/rsvp`, {
+    method: "DELETE",
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
 };
