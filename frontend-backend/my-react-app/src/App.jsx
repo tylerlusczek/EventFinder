@@ -221,7 +221,9 @@ export default function App() {
       <header className="top-header">
         <div>
           <h1>Event Finder</h1>
-          <p>Welcome, {user.first_name}</p>
+          <div>
+          <p style={{ marginTop: '1em' }}>Welcome, {user.first_name}</p>
+          </div>
         </div>
         <div className="header-actions">
           <button type="button" className="logout-button" onClick={handleLogout}>
@@ -236,9 +238,6 @@ export default function App() {
         <button className={currentTab === "your-events" ? "active" : ""} onClick={() => setCurrentTab("your-events")}>Your Events</button>
         <button className={currentTab === "account" ? "active" : ""} onClick={() => setCurrentTab("account")}>Account</button>
       </nav>
-
-      {message && <p className="info-message">{message}</p>}
-      {authMessage && <p className="info-message">{authMessage}</p>}
 
       {currentTab === "clubs" && <ClubList clubs={clubs} onJoin={handleJoinClub} onLeave={handleLeaveClub} />}
 
