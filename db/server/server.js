@@ -62,7 +62,7 @@ app.post("/signup", async (req, res) => {
       "INSERT INTO Users (email, first_name, last_name, password_hash) VALUES (?, ?, ?, ?)",
       [email, first_name, last_name, password_hash],
       (insertErr, insertResult) => {
-        if (insertErr) return res.status(500).json({ error: insertErr.message });
+        if (insertErr) return res.status(500).json({ error: "Account creation failed. Please try again." });
 
         const userId = insertResult.insertId;
         db.query("INSERT INTO Student (user_id, grad_year, major) VALUES (?, ?, ?)", [userId, grad_year, major], (studentErr) => {
@@ -85,7 +85,7 @@ app.post("/login", (req, res) => {
   }
 
   db.query("SELECT user_id, email, first_name, last_name, password_hash FROM Users WHERE email = ?", [email], async (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) return res.status(401).json({ error: "Invalid login. Please check your credentials." });
     if (results.length === 0) return res.status(401).json({ error: "Invalid email or password" });
 
     const user = results[0];
@@ -108,7 +108,7 @@ app.put("/change-password", authenticateToken, async (req, res) => {
   }
 
   db.query("SELECT password_hash FROM Users WHERE user_id = ?", [req.user.id], async (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) return res.status(500).json({ error: "Password change failed. Please try again." });
     if (results.length === 0) return res.status(404).json({ error: "User not found" });
 
     const currentHash = results[0].password_hash || "";
@@ -120,7 +120,7 @@ app.put("/change-password", authenticateToken, async (req, res) => {
 
     const newHash = await bcrypt.hash(newPassword, 10);
     db.query("UPDATE Users SET password_hash = ? WHERE user_id = ?", [newHash, req.user.id], (updateErr) => {
-      if (updateErr) return res.status(500).json({ error: updateErr.message });
+      if (updateErr) return res.status(500).json({ error: "Password change failed. Please try again." });
       res.json({ message: "Password updated successfully" });
     });
   });

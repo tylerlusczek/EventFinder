@@ -217,61 +217,57 @@ export default function App() {
   const rsvpStatusById = Object.fromEntries(myEvents.map((event) => [event.id, event.rsvp_status]));
 
   return (
-    <div className="container">
-      <header className="top-header">
+    <div className="page-wrapper">
+      <header className="header-card">
         <div>
           <h1>Event Finder</h1>
-          <div>
-          <p style={{ marginTop: '1em' }}>Welcome, {user.first_name}</p>
-          </div>
+          <p className="welcome-text">Welcome, {user.first_name}</p>
         </div>
-        <div className="header-actions">
-          <button type="button" className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
+        <button type="button" className="btn-logout" onClick={handleLogout}>
+          Logout
+        </button>
       </header>
 
-      <nav className="top-nav">
-        <button className={currentTab === "clubs" ? "active" : ""} onClick={() => setCurrentTab("clubs")}>Clubs</button>
-        <button className={currentTab === "events" ? "active" : ""} onClick={() => setCurrentTab("events")}>Events</button>
-        <button className={currentTab === "your-events" ? "active" : ""} onClick={() => setCurrentTab("your-events")}>Your Events</button>
-        <button className={currentTab === "account" ? "active" : ""} onClick={() => setCurrentTab("account")}>Account</button>
+      <nav className="tab-bar">
+        <button className={"tab" + (currentTab === "clubs" ? " active" : "")} onClick={() => setCurrentTab("clubs")}>Clubs</button>
+        <button className={"tab" + (currentTab === "events" ? " active" : "")} onClick={() => setCurrentTab("events")}>Events</button>
+        <button className={"tab" + (currentTab === "your-events" ? " active" : "")} onClick={() => setCurrentTab("your-events")}>Your Events</button>
+        <button className={"tab" + (currentTab === "account" ? " active" : "")} onClick={() => setCurrentTab("account")}>Account</button>
       </nav>
 
-      {currentTab === "clubs" && <ClubList clubs={clubs} onJoin={handleJoinClub} onLeave={handleLeaveClub} />}
+      <div className="tab-content">
+        {currentTab === "clubs" && <ClubList clubs={clubs} onJoin={handleJoinClub} onLeave={handleLeaveClub} />}
 
-      {currentTab === "events" && (
-        <>
-          <h2 className="section-header">Create / Edit Event</h2>
-          <EventForm onSubmit={handleCreateOrUpdateEvent} selectedEvent={selectedEvent} />
-          <h2 className="section-header">All Events</h2>
-          <EventList
-            events={events}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
+        {currentTab === "events" && (
+          <>
+            <EventForm onSubmit={handleCreateOrUpdateEvent} selectedEvent={selectedEvent} />
+            <EventList
+              events={events}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              currentUserId={user.id}
+              onRsvp={handleRsvp}
+              onCancelRsvp={handleCancelRsvp}
+              registeredEventIds={registeredEventIds}
+              rsvpStatusById={rsvpStatusById}
+            />
+          </>
+        )}
+
+        {currentTab === "your-events" && (
+          <YourEventsList
+            events={myEvents}
             currentUserId={user.id}
-            onRsvp={handleRsvp}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
             onCancelRsvp={handleCancelRsvp}
-            registeredEventIds={registeredEventIds}
-            rsvpStatusById={rsvpStatusById}
           />
-        </>
-      )}
+        )}
 
-      {currentTab === "your-events" && (
-        <YourEventsList
-          events={myEvents}
-          currentUserId={user.id}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onCancelRsvp={handleCancelRsvp}
-        />
-      )}
-
-      {currentTab === "account" && (
-        <AccountInfo user={user} onPasswordChange={handlePasswordChange} authMessage={authMessage} />
-      )}
+        {currentTab === "account" && (
+          <AccountInfo user={user} onPasswordChange={handlePasswordChange} authMessage={authMessage} />
+        )}
+      </div>
     </div>
   );
 }

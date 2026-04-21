@@ -1,4 +1,4 @@
-﻿function formatDate(str) {
+function formatDate(str) {
   if (!str) return "";
   const d = new Date(str);
   return d.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
@@ -6,8 +6,9 @@
 
 export default function EventList({ events, onDelete, onEdit, currentUserId, onRsvp, onCancelRsvp, registeredEventIds, rsvpStatusById }) {
   return (
-    <div className="table-container">
-      <table className="event-table">
+    <div className="table-card">
+      <div className="table-card-header">All Events</div>
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -23,7 +24,7 @@ export default function EventList({ events, onDelete, onEdit, currentUserId, onR
         <tbody>
           {events.length === 0 && (
             <tr>
-              <td colSpan="8" style={{ textAlign: "center" }}>No events found</td>
+              <td colSpan="8" className="empty-state">No events found</td>
             </tr>
           )}
           {events.map((event) => {
@@ -40,11 +41,11 @@ export default function EventList({ events, onDelete, onEdit, currentUserId, onR
                 <td>{formatDate(event.end_time)}</td>
                 <td>{event.club_name}</td>
                 <td>
-                  {isOwner && <button onClick={() => onEdit(event)}>Edit</button>}
-                  {isOwner && <button onClick={() => onDelete(event.id)}>Delete</button>}
-                  {!isOwner && !isRegistered && <button onClick={() => onRsvp(event.id)}>RSVP</button>}
+                  {isOwner && <button className="btn-edit" onClick={() => onEdit(event)}>Edit</button>}
+                  {isOwner && <button className="btn-delete" onClick={() => onDelete(event.id)}>Delete</button>}
+                  {!isOwner && !isRegistered && <button className="btn-rsvp" onClick={() => onRsvp(event.id)}>RSVP</button>}
                   {!isOwner && isRegistered && (
-                    <button onClick={() => onCancelRsvp(event.id)}>
+                    <button className="btn-cancel-rsvp" onClick={() => onCancelRsvp(event.id)}>
                       Cancel RSVP {rsvpStatus ? `(${rsvpStatus})` : ""}
                     </button>
                   )}

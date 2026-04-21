@@ -24,16 +24,16 @@ export default function AccountInfo({ user, onPasswordChange, authMessage }) {
 
       <div className="password-card">
         <h3>Change Password</h3>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label>Current Password</label>
-            <input type="password" name="currentPassword" required />
+        <form onSubmit={handleSubmit}>
+          <div className="field">
+            <label htmlFor="currentPassword">Current Password</label>
+            <input type="password" id="currentPassword" name="currentPassword" required placeholder="••••••••" />
           </div>
-          <div className="form-group">
-            <label>New Password</label>
-            <input type="password" name="newPassword" required />
+          <div className="field">
+            <label htmlFor="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" required placeholder="••••••••" />
           </div>
-          <button type="submit">Update Password</button>
+          <button type="submit" className="btn-login">Update Password</button>
         </form>
         {authMessage && <p className="info-message">{authMessage}</p>}
       </div>
