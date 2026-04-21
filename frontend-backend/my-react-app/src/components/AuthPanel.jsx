@@ -11,7 +11,7 @@ const initialForm = {
   newPassword: "",
 };
 
-export default function AuthPanel({ user, onLogin, onSignup, onLogout, onPasswordChange, authMessage }) {
+export default function AuthPanel({ user, onLogin, onSignup, onLogout, onPasswordChange, authMessage, authMessageType = "error" }) {
   const [mode, setMode] = useState("login");
   const [form, setForm] = useState(initialForm);
 
@@ -94,21 +94,25 @@ export default function AuthPanel({ user, onLogin, onSignup, onLogout, onPasswor
             <button type="submit" className="btn-login">{mode === "login" ? "Log In" : "Sign Up"}</button>
           </form>
 
-          {authMessage && <p className="error-message">{authMessage}</p>}
+          {authMessage && <p className={authMessageType === "success" ? "success-message" : "error-message"}>{authMessage}</p>}
           <div className="card-footer">
-            <a href="#" onClick={(e) => { e.preventDefault(); setMode(mode === "login" ? "signup" : "login"); }}>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => setMode(mode === "login" ? "signup" : "login")}
+            >
               {mode === "login" ? "Create an account" : "Already have an account?"}
-            </a>
+            </button>
           </div>
         </>
       ) : (
         <>
           <h1 className="login-title">Welcome, {user.first_name}</h1>
-          <p style={{ textAlign: "center", color: "var(--text-muted)", marginBottom: "1.25rem" }}>Signed in as {user.email}</p>
+          <p className="login-subtitle">Signed in as {user.email}</p>
           <button type="button" className="btn-login logout-button" onClick={onLogout}>Logout</button>
 
           <div className="password-card">
-            <h3 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--label-text)", marginBottom: "1rem" }}>Change Password</h3>
+            <h3 className="password-card-title">Change Password</h3>
             <form onSubmit={handlePasswordUpdate}>
               <div className="field">
                 <label htmlFor="currentPassword">Current Password</label>
@@ -121,7 +125,7 @@ export default function AuthPanel({ user, onLogin, onSignup, onLogout, onPasswor
               <button type="submit" className="btn-login">Update Password</button>
             </form>
           </div>
-          {authMessage && <p className="error-message">{authMessage}</p>}
+          {authMessage && <p className={authMessageType === "success" ? "success-message" : "error-message"}>{authMessage}</p>}
         </>
       )}
     </div>

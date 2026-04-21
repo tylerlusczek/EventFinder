@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { getClubs } from "../api";
 
-export default function EventForm({ onSubmit, selectedEvent }) {
+export default function EventForm({ onSubmit, selectedEvent, clubs = [] }) {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -11,12 +10,6 @@ export default function EventForm({ onSubmit, selectedEvent }) {
     start_time: "",
     end_time: "",
   });
-
-  const [clubs, setClubs] = useState([]);
-
-  useEffect(() => {
-    getClubs().then(setClubs);
-  }, []);
 
   const formatDateTimeLocal = (dt) => {
     if (!dt) return "";

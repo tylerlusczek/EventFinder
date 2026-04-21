@@ -28,6 +28,7 @@ export default function App() {
     return stored ? JSON.parse(stored) : null;
   });
   const [authMessage, setAuthMessage] = useState("");
+  const [authMessageType, setAuthMessageType] = useState("error");
   const [currentTab, setCurrentTab] = useState("events");
   const [events, setEvents] = useState([]);
   const [clubs, setClubs] = useState([]);
@@ -70,6 +71,12 @@ export default function App() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!message) return;
+    const t = setTimeout(() => setMessage(""), 3000);
+    return () => clearTimeout(t);
+  }, [message]);
+
   const handleLogin = async (credentials) => {
     try {
       const response = await login(credentials);
@@ -77,9 +84,11 @@ export default function App() {
       localStorage.setItem("user", JSON.stringify(response.user));
       setUser(response.user);
       setAuthMessage("Login successful");
+      setAuthMessageType("success");
       setMessage("");
     } catch (err) {
       setAuthMessage(err.message);
+      setAuthMessageType("error");
       throw err;
     }
   };
@@ -91,9 +100,11 @@ export default function App() {
       localStorage.setItem("user", JSON.stringify(response.user));
       setUser(response.user);
       setAuthMessage("Account created successfully");
+      setAuthMessageType("success");
       setMessage("");
     } catch (err) {
       setAuthMessage(err.message);
+      setAuthMessageType("error");
       throw err;
     }
   };
@@ -103,6 +114,7 @@ export default function App() {
     localStorage.removeItem("user");
     setUser(null);
     setAuthMessage("Logged out successfully");
+    setAuthMessageType("success");
     setCurrentTab("events");
     setEvents([]);
     setClubs([]);
@@ -115,8 +127,10 @@ export default function App() {
     try {
       await changePassword(payload);
       setAuthMessage("Password updated successfully");
+      setAuthMessageType("success");
     } catch (err) {
       setAuthMessage(err.message);
+      setAuthMessageType("error");
       throw err;
     }
   };
@@ -208,6 +222,7 @@ export default function App() {
           onLogout={handleLogout}
           onPasswordChange={handlePasswordChange}
           authMessage={authMessage}
+          authMessageType={authMessageType}
         />
       </div>
     );
@@ -229,18 +244,24 @@ export default function App() {
       </header>
 
       <nav className="tab-bar">
-        <button className={"tab" + (currentTab === "clubs" ? " active" : "")} onClick={() => setCurrentTab("clubs")}>Clubs</button>
-        <button className={"tab" + (currentTab === "events" ? " active" : "")} onClick={() => setCurrentTab("events")}>Events</button>
-        <button className={"tab" + (currentTab === "your-events" ? " active" : "")} onClick={() => setCurrentTab("your-events")}>Your Events</button>
-        <button className={"tab" + (currentTab === "account" ? " active" : "")} onClick={() => setCurrentTab("account")}>Account</button>
+        <button className={"tab" + (currentTab === "clubs" ? " active" : "")} aria-current={currentTab === "clubs" ? "page" : undefined} onClick={() => setCurrentTab("clubs")}>Clubs</button>
+        <button className={"tab" + (currentTab === "events" ? " active" : "")} aria-current={currentTab === "events" ? "page" : undefined} onClick={() => setCurrentTab("events")}>Events</button>
+        <button className={"tab" + (currentTab === "your-events" ? " active" : "")} aria-current={currentTab === "your-events" ? "page" : undefined} onClick={() => setCurrentTab("your-events")}>Your Events</button>
+        <button className={"tab" + (currentTab === "account" ? " active" : "")} aria-current={currentTab === "account" ? "page" : undefined} onClick={() => setCurrentTab("account")}>Account</button>
       </nav>
+
+      {message && (
+        <p role="status" aria-live="polite" className="feedback-banner">
+          {message}
+        </p>
+      )}
 
       <div className="tab-content">
         {currentTab === "clubs" && <ClubList clubs={clubs} onJoin={handleJoinClub} onLeave={handleLeaveClub} />}
 
         {currentTab === "events" && (
           <>
-            <EventForm onSubmit={handleCreateOrUpdateEvent} selectedEvent={selectedEvent} />
+            <EventForm onSubmit={handleCreateOrUpdateEvent} selectedEvent={selectedEvent} clubs={clubs} />
             <EventList
               events={events}
               onDelete={handleDelete}
@@ -265,7 +286,7 @@ export default function App() {
         )}
 
         {currentTab === "account" && (
-          <AccountInfo user={user} onPasswordChange={handlePasswordChange} authMessage={authMessage} />
+          <AccountInfo user={user} onPasswordChange={handlePasswordChange} authMessage={authMessage} authMessageType={authMessageType} />
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-export default function AccountInfo({ user, onPasswordChange, authMessage }) {
+export default function AccountInfo({ user, onPasswordChange, authMessage, authMessageType = "error" }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
@@ -35,7 +35,7 @@ export default function AccountInfo({ user, onPasswordChange, authMessage }) {
           </div>
           <button type="submit" className="btn-login">Update Password</button>
         </form>
-        {authMessage && <p className="info-message">{authMessage}</p>}
+        {authMessage && <p className={authMessageType === "success" ? "success-message" : "error-message"}>{authMessage}</p>}
       </div>
     </div>
   );

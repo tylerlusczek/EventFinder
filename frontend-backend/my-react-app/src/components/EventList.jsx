@@ -8,53 +8,55 @@ export default function EventList({ events, onDelete, onEdit, currentUserId, onR
   return (
     <div className="table-card">
       <div className="table-card-header">All Events</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Location</th>
-            <th>Capacity</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Club</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.length === 0 && (
+      <div className="table-scroll">
+        <table>
+          <thead>
             <tr>
-              <td colSpan="8" className="empty-state">No events found</td>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Location</th>
+              <th scope="col">Capacity</th>
+              <th scope="col">Start</th>
+              <th scope="col">End</th>
+              <th scope="col">Club</th>
+              <th scope="col">Actions</th>
             </tr>
-          )}
-          {events.map((event) => {
-            const isOwner = currentUserId && event.created_by === currentUserId;
-            const isRegistered = registeredEventIds?.has(event.id);
-            const rsvpStatus = rsvpStatusById?.[event.id];
-            return (
-              <tr key={event.id}>
-                <td>{event.name}</td>
-                <td>{event.description}</td>
-                <td>{event.location}</td>
-                <td>{event.capacity}</td>
-                <td>{formatDate(event.date)}</td>
-                <td>{formatDate(event.end_time)}</td>
-                <td>{event.club_name}</td>
-                <td>
-                  {isOwner && <button className="btn-edit" onClick={() => onEdit(event)}>Edit</button>}
-                  {isOwner && <button className="btn-delete" onClick={() => onDelete(event.id)}>Delete</button>}
-                  {!isOwner && !isRegistered && <button className="btn-rsvp" onClick={() => onRsvp(event.id)}>RSVP</button>}
-                  {!isOwner && isRegistered && (
-                    <button className="btn-cancel-rsvp" onClick={() => onCancelRsvp(event.id)}>
-                      Cancel RSVP {rsvpStatus ? `(${rsvpStatus})` : ""}
-                    </button>
-                  )}
-                </td>
+          </thead>
+          <tbody>
+            {events.length === 0 && (
+              <tr>
+                <td colSpan="8" className="empty-state">No events found</td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            )}
+            {events.map((event) => {
+              const isOwner = currentUserId && event.created_by === currentUserId;
+              const isRegistered = registeredEventIds?.has(event.id);
+              const rsvpStatus = rsvpStatusById?.[event.id];
+              return (
+                <tr key={event.id}>
+                  <td>{event.name}</td>
+                  <td>{event.description}</td>
+                  <td>{event.location}</td>
+                  <td>{event.capacity}</td>
+                  <td>{formatDate(event.date)}</td>
+                  <td>{formatDate(event.end_time)}</td>
+                  <td>{event.club_name}</td>
+                  <td>
+                    {isOwner && <button className="btn-edit" aria-label={"Edit " + event.name} onClick={() => onEdit(event)}>Edit</button>}
+                    {isOwner && <button className="btn-delete" aria-label={"Delete " + event.name} onClick={() => onDelete(event.id)}>Delete</button>}
+                    {!isOwner && !isRegistered && <button className="btn-rsvp" aria-label={"RSVP to " + event.name} onClick={() => onRsvp(event.id)}>RSVP</button>}
+                    {!isOwner && isRegistered && (
+                      <button className="btn-cancel-rsvp" aria-label={"Cancel RSVP for " + event.name} onClick={() => onCancelRsvp(event.id)}>
+                        Cancel RSVP {rsvpStatus ? `(${rsvpStatus})` : ""}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
