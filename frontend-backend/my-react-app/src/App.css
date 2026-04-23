@@ -621,3 +621,44 @@ body {
     padding: 0.5rem 0.85rem;
   }
 }
+
+.edit-form {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px var(--card-shadow);
+}
+
+.edit-form h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.edit-form .field {
+  margin-bottom: 1rem;
+}
+
+.edit-form .btn-login {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.btn-cancel {
+  background: var(--danger);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-cancel:hover {
+  background: var(--danger-hover);
+}

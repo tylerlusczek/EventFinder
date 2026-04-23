@@ -3,6 +3,8 @@ import EventForm from "./components/EventForm";
 import EventList from "./components/EventList";
 import ClubList from "./components/ClubList";
 import YourEventsList from "./components/YourEventsList";
+import UsersList from "./components/UsersList";
+import UserForm from "./components/UserForm";
 import AccountInfo from "./components/AccountInfo";
 import AuthPanel from "./components/AuthPanel";
 import "./app.css";
@@ -18,6 +20,11 @@ import {
   changePassword,
   joinClub,
   leaveClub,
+  createClub,
+  deleteClub,
+  getUsers,
+  createUser,
+  updateUser,
   rsvpEvent,
   cancelRsvp,
 } from "./api";
@@ -33,7 +40,9 @@ export default function App() {
   const [events, setEvents] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [myEvents, setMyEvents] = useState([]);
+  const [users, setUsers] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [message, setMessage] = useState("");
 
   const loadEvents = async () => {
@@ -63,11 +72,24 @@ export default function App() {
     }
   };
 
+  const loadUsers = async () => {
+    try {
+      const data = await getUsers();
+      setUsers(data);
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       loadEvents();
       loadClubs();
-      loadMyEvents();
+      if (user.isAdmin) {
+        loadUsers();
+      } else {
+        loadMyEvents();
+      }
     }
   }, [user]);
 
@@ -119,7 +141,9 @@ export default function App() {
     setEvents([]);
     setClubs([]);
     setMyEvents([]);
+    setUsers([]);
     setSelectedEvent(null);
+    setSelectedUser(null);
     setMessage("");
   };
 
@@ -192,6 +216,27 @@ export default function App() {
     }
   };
 
+  const handleCreateClub = async (club) => {
+    try {
+      await createClub(club);
+      setMessage("Club added successfully");
+      loadClubs();
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  const handleDeleteClub = async (orgId) => {
+    try {
+      await deleteClub(orgId);
+      setMessage("Club deleted successfully");
+      loadClubs();
+      loadEvents();
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
   const handleRsvp = async (eventId) => {
     try {
       await rsvpEvent(eventId);
@@ -207,6 +252,22 @@ export default function App() {
       await cancelRsvp(eventId);
       setMessage("RSVP cancelled successfully");
       loadMyEvents();
+    } catch (err) {
+      setMessage(err.message);
+    }
+  };
+
+  const handleCreateOrUpdateUser = async (user) => {
+    try {
+      if (selectedUser) {
+        await updateUser(selectedUser.id, user);
+        setMessage("User updated successfully");
+      } else {
+        await createUser(user);
+        setMessage("User created successfully");
+      }
+      setSelectedUser(null);
+      loadUsers();
     } catch (err) {
       setMessage(err.message);
     }
@@ -236,7 +297,7 @@ export default function App() {
       <header className="header-card">
         <div>
           <h1>Event Finder</h1>
-          <p className="welcome-text">Welcome, {user.first_name}</p>
+          <p className="welcome-text">Welcome, {user.first_name}{user.isAdmin ? " (Admin)" : ""}</p>
         </div>
         <button type="button" className="btn-logout" onClick={handleLogout}>
           Logout
@@ -246,7 +307,11 @@ export default function App() {
       <nav className="tab-bar">
         <button className={"tab" + (currentTab === "clubs" ? " active" : "")} aria-current={currentTab === "clubs" ? "page" : undefined} onClick={() => setCurrentTab("clubs")}>Clubs</button>
         <button className={"tab" + (currentTab === "events" ? " active" : "")} aria-current={currentTab === "events" ? "page" : undefined} onClick={() => setCurrentTab("events")}>Events</button>
-        <button className={"tab" + (currentTab === "your-events" ? " active" : "")} aria-current={currentTab === "your-events" ? "page" : undefined} onClick={() => setCurrentTab("your-events")}>Your Events</button>
+        {user.isAdmin ? (
+          <button className={"tab" + (currentTab === "users" ? " active" : "")} aria-current={currentTab === "users" ? "page" : undefined} onClick={() => setCurrentTab("users")}>Users</button>
+        ) : (
+          <button className={"tab" + (currentTab === "your-events" ? " active" : "")} aria-current={currentTab === "your-events" ? "page" : undefined} onClick={() => setCurrentTab("your-events")}>Your Events</button>
+        )}
         <button className={"tab" + (currentTab === "account" ? " active" : "")} aria-current={currentTab === "account" ? "page" : undefined} onClick={() => setCurrentTab("account")}>Account</button>
       </nav>
 
@@ -257,7 +322,16 @@ export default function App() {
       )}
 
       <div className="tab-content">
-        {currentTab === "clubs" && <ClubList clubs={clubs} onJoin={handleJoinClub} onLeave={handleLeaveClub} />}
+        {currentTab === "clubs" && (
+        <ClubList
+          clubs={clubs}
+          onJoin={handleJoinClub}
+          onLeave={handleLeaveClub}
+          onCreateClub={handleCreateClub}
+          onDeleteClub={handleDeleteClub}
+          isAdmin={Boolean(user.isAdmin)}
+        />
+      )}
 
         {currentTab === "events" && (
           <>
@@ -271,6 +345,7 @@ export default function App() {
               onCancelRsvp={handleCancelRsvp}
               registeredEventIds={registeredEventIds}
               rsvpStatusById={rsvpStatusById}
+              isAdmin={Boolean(user.isAdmin)}
             />
           </>
         )}
@@ -283,6 +358,16 @@ export default function App() {
             onDelete={handleDelete}
             onCancelRsvp={handleCancelRsvp}
           />
+        )}
+
+        {currentTab === "users" && user.isAdmin && (
+          <>
+            <UserForm onSubmit={handleCreateOrUpdateUser} selectedUser={selectedUser} onCancel={() => setSelectedUser(null)} />
+            <UsersList
+              users={users}
+              onEditUser={setSelectedUser}
+            />
+          </>
         )}
 
         {currentTab === "account" && (

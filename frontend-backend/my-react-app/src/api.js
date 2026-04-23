@@ -76,6 +76,28 @@ export const leaveClub = async (orgId) => {
   return handleResponse(res);
 };
 
+export const createClub = async (club) => {
+  const res = await fetch(`${API_BASE}/clubs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(club),
+  });
+  return handleResponse(res);
+};
+
+export const deleteClub = async (orgId) => {
+  const res = await fetch(`${API_BASE}/clubs/${orgId}`, {
+    method: "DELETE",
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
 export const getEvents = async () => {
   const res = await fetch(`${API_BASE}/events`, {
     headers: {
@@ -146,6 +168,39 @@ export const cancelRsvp = async (eventId) => {
     headers: {
       ...getAuthHeaders(),
     },
+  });
+  return handleResponse(res);
+};
+
+export const getUsers = async () => {
+  const res = await fetch(`${API_BASE}/users`, {
+    headers: {
+      ...getAuthHeaders(),
+    },
+  });
+  return handleResponse(res);
+};
+
+export const createUser = async (user) => {
+  const res = await fetch(`${API_BASE}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(user),
+  });
+  return handleResponse(res);
+};
+
+export const updateUser = async (id, user) => {
+  const res = await fetch(`${API_BASE}/users/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(user),
   });
   return handleResponse(res);
 };

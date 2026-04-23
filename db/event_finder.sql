@@ -103,9 +103,6 @@ INSERT INTO Administrator (user_id, admin_level) VALUES
 (3, 'Standard');
 
 INSERT INTO Student (user_id, grad_year, major) VALUES
-(1, 2026, 'Computer Science'),
-(2, 2025, 'Business'),
-(3, 2027, 'Biology'),
 (4, 2026, 'Mathematics'),
 (5, 2025, 'Physics'),
 (6, 2026, 'Chemistry'),

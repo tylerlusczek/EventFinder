@@ -1,10 +1,10 @@
-function formatDate(str) {
+﻿function formatDate(str) {
   if (!str) return "";
   const d = new Date(str);
   return d.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
-export default function EventList({ events, onDelete, onEdit, currentUserId, onRsvp, onCancelRsvp, registeredEventIds, rsvpStatusById }) {
+export default function EventList({ events, onDelete, onEdit, currentUserId, onRsvp, onCancelRsvp, registeredEventIds, rsvpStatusById, isAdmin = false }) {
   return (
     <div className="table-card">
       <div className="table-card-header">All Events</div>
@@ -42,8 +42,8 @@ export default function EventList({ events, onDelete, onEdit, currentUserId, onR
                   <td>{formatDate(event.end_time)}</td>
                   <td>{event.club_name}</td>
                   <td>
-                    {isOwner && <button className="btn-edit" aria-label={"Edit " + event.name} onClick={() => onEdit(event)}>Edit</button>}
-                    {isOwner && <button className="btn-delete" aria-label={"Delete " + event.name} onClick={() => onDelete(event.id)}>Delete</button>}
+                    {(isOwner || isAdmin) && <button className="btn-edit" aria-label={"Edit " + event.name} onClick={() => onEdit(event)}>Edit</button>}
+                    {(isOwner || isAdmin) && <button className="btn-delete" aria-label={"Delete " + event.name} onClick={() => onDelete(event.id)}>Delete</button>}
                     {!isOwner && !isRegistered && <button className="btn-rsvp" aria-label={"RSVP to " + event.name} onClick={() => onRsvp(event.id)}>RSVP</button>}
                     {!isOwner && isRegistered && (
                       <button className="btn-cancel-rsvp" aria-label={"Cancel RSVP for " + event.name} onClick={() => onCancelRsvp(event.id)}>
