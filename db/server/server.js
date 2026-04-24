@@ -434,6 +434,36 @@ app.post("/users", authenticateToken, async (req, res) => {
   });
 });
 
+app.post("/admins", authenticateToken, async (req, res) => {
+  if (!req.user.isAdmin) return res.status(403).json({ error: "Admin access required" });
+  const { email, password, first_name, last_name } = req.body;
+
+  if (!email || !password || !first_name || !last_name) {
+    return res.status(400).json({ error: "Email, password, first name, and last name are required" });
+  }
+
+  db.query("SELECT user_id FROM Users WHERE email = ?", [email], async (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length > 0) return res.status(409).json({ error: "Email already registered" });
+
+    const password_hash = await bcrypt.hash(password, 10);
+
+    db.query(
+      "INSERT INTO Users (email, first_name, last_name, password_hash) VALUES (?, ?, ?, ?)",
+      [email, first_name, last_name, password_hash],
+      (insertErr, insertResult) => {
+        if (insertErr) return res.status(500).json({ error: insertErr.message });
+
+        const userId = insertResult.insertId;
+        db.query("INSERT INTO Administrator (user_id, admin_level) VALUES (?, ?)", [userId, "Standard"], (adminErr) => {
+          if (adminErr) return res.status(500).json({ error: adminErr.message });
+          res.json({ id: userId, email, first_name, last_name, isAdmin: true });
+        });
+      }
+    );
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

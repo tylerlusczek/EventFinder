@@ -193,6 +193,18 @@ export const createUser = async (user) => {
   return handleResponse(res);
 };
 
+export const createAdmin = async (admin) => {
+  const res = await fetch(`${API_BASE}/admins`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(admin),
+  });
+  return handleResponse(res);
+};
+
 export const updateUser = async (id, user) => {
   const res = await fetch(`${API_BASE}/users/${id}`, {
     method: "PUT",

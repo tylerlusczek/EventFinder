@@ -24,6 +24,7 @@ import {
   deleteClub,
   getUsers,
   createUser,
+  createAdmin,
   updateUser,
   rsvpEvent,
   cancelRsvp,
@@ -43,6 +44,7 @@ export default function App() {
   const [users, setUsers] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [createMode, setCreateMode] = useState("user");
   const [message, setMessage] = useState("");
 
   const loadEvents = async () => {
@@ -262,11 +264,15 @@ export default function App() {
       if (selectedUser) {
         await updateUser(selectedUser.id, user);
         setMessage("User updated successfully");
+      } else if (createMode === "admin") {
+        await createAdmin(user);
+        setMessage("Admin created successfully");
       } else {
         await createUser(user);
         setMessage("User created successfully");
       }
       setSelectedUser(null);
+      setCreateMode("user");
       loadUsers();
     } catch (err) {
       setMessage(err.message);
@@ -362,10 +368,41 @@ export default function App() {
 
         {currentTab === "users" && user.isAdmin && (
           <>
-            <UserForm onSubmit={handleCreateOrUpdateUser} selectedUser={selectedUser} onCancel={() => setSelectedUser(null)} />
+            <div className="tab-bar" style={{ marginBottom: "1rem" }}>
+              <button
+                className={"tab" + (createMode === "user" ? " active" : "")}
+                type="button"
+                onClick={() => {
+                  setCreateMode("user");
+                  setSelectedUser(null);
+                }}
+              >
+                Create user
+              </button>
+              <button
+                className={"tab" + (createMode === "admin" ? " active" : "")}
+                type="button"
+                onClick={() => {
+                  setCreateMode("admin");
+                  setSelectedUser(null);
+                }}
+              >
+                Create admin
+              </button>
+            </div>
+            <UserForm
+              mode={createMode}
+              onSubmit={handleCreateOrUpdateUser}
+              selectedUser={selectedUser}
+              onCancel={() => setSelectedUser(null)}
+            />
             <UsersList
               users={users}
-              onEditUser={setSelectedUser}
+              onEditUser={(userToEdit) => {
+                setSelectedUser(userToEdit);
+                setCreateMode(userToEdit.isAdmin ? "admin" : "user");
+                setCurrentTab("users");
+              }}
             />
           </>
         )}

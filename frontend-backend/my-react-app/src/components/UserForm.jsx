@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function UserForm({ onSubmit, selectedUser, onCancel }) {
+export default function UserForm({ onSubmit, selectedUser, onCancel, mode = "user" }) {
   const [form, setForm] = useState({
     email: "",
     first_name: "",
@@ -30,7 +30,7 @@ export default function UserForm({ onSubmit, selectedUser, onCancel }) {
         password: "",
       });
     }
-  }, [selectedUser]);
+  }, [selectedUser, mode]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,9 +49,14 @@ export default function UserForm({ onSubmit, selectedUser, onCancel }) {
     });
   };
 
+  const isAdminMode = mode === "admin" || selectedUser?.isAdmin;
+  const showStudentFields = !isAdminMode;
+
   return (
     <div className="table-card">
-      <div className="table-card-header">{selectedUser ? "Edit User" : "Create User"}</div>
+      <div className="table-card-header">
+        {selectedUser ? (selectedUser.isAdmin ? "Edit Admin" : "Edit User") : mode === "admin" ? "Create Admin" : "Create User"}
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="field-row">
           <div className="field">
@@ -68,22 +73,33 @@ export default function UserForm({ onSubmit, selectedUser, onCancel }) {
             <label htmlFor="last_name">Last Name</label>
             <input id="last_name" name="last_name" value={form.last_name} onChange={handleChange} required />
           </div>
-          <div className="field">
-            <label htmlFor="grad_year">Grad Year</label>
-            <input id="grad_year" name="grad_year" type="number" value={form.grad_year} onChange={handleChange} required />
-          </div>
+          {showStudentFields ? (
+            <div className="field">
+              <label htmlFor="grad_year">Grad Year</label>
+              <input id="grad_year" name="grad_year" type="number" value={form.grad_year} onChange={handleChange} required={!selectedUser} />
+            </div>
+          ) : (
+            <div className="field">
+              <label htmlFor="password">Password {selectedUser ? "(leave blank to keep current)" : ""}</label>
+              <input id="password" name="password" type="password" value={form.password} onChange={handleChange} required={!selectedUser} />
+            </div>
+          )}
         </div>
-        <div className="field-row">
-          <div className="field">
-            <label htmlFor="major">Major</label>
-            <input id="major" name="major" value={form.major} onChange={handleChange} required />
+        {showStudentFields ? (
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor="major">Major</label>
+              <input id="major" name="major" value={form.major} onChange={handleChange} required={!selectedUser} />
+            </div>
+            <div className="field">
+              <label htmlFor="password">Password {selectedUser ? "(leave blank to keep current)" : ""}</label>
+              <input id="password" name="password" type="password" value={form.password} onChange={handleChange} required={!selectedUser} />
+            </div>
           </div>
-          <div className="field">
-            <label htmlFor="password">Password {selectedUser ? "(leave blank to keep current)" : ""}</label>
-            <input id="password" name="password" type="password" value={form.password} onChange={handleChange} required={!selectedUser} />
-          </div>
-        </div>
-        <button type="submit" className="btn-login">{selectedUser ? "Update User" : "Create User"}</button>
+        ) : null}
+        <button type="submit" className="btn-login">
+          {selectedUser ? (selectedUser.isAdmin ? "Update Admin" : "Update User") : mode === "admin" ? "Create Admin" : "Create User"}
+        </button>
         {selectedUser && <button type="button" className="btn-cancel" onClick={onCancel}>Cancel</button>}
       </form>
     </div>
