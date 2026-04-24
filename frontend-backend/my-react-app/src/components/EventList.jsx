@@ -44,8 +44,8 @@ export default function EventList({ events, onDelete, onEdit, currentUserId, onR
                   <td>
                     {(isOwner || isAdmin) && <button className="btn-edit" aria-label={"Edit " + event.name} onClick={() => onEdit(event)}>Edit</button>}
                     {(isOwner || isAdmin) && <button className="btn-delete" aria-label={"Delete " + event.name} onClick={() => onDelete(event.id)}>Delete</button>}
-                    {!isOwner && !isRegistered && <button className="btn-rsvp" aria-label={"RSVP to " + event.name} onClick={() => onRsvp(event.id)}>RSVP</button>}
-                    {!isOwner && isRegistered && (
+                    {isAdmin || !isOwner && !isRegistered && <button className="btn-rsvp" aria-label={"RSVP to " + event.name} onClick={() => onRsvp(event.id)}>RSVP</button>}
+                    {isAdmin || !isOwner && isRegistered && (
                       <button className="btn-cancel-rsvp" aria-label={"Cancel RSVP for " + event.name} onClick={() => onCancelRsvp(event.id)}>
                         Cancel RSVP {rsvpStatus ? `(${rsvpStatus})` : ""}
                       </button>

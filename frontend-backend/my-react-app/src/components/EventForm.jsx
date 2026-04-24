@@ -81,9 +81,12 @@ export default function EventForm({ onSubmit, selectedEvent, clubs = [] }) {
           <label htmlFor="org_id">Club</label>
           <select id="org_id" name="org_id" value={form.org_id} onChange={handleChange}>
             <option value="">Select Club</option>
-            {clubs.map((club) => (
-              <option key={club.id} value={club.id}>{club.name}</option>
-            ))}
+            {clubs.map((club) => {
+              const isMember = Number(club.is_member) === 1;
+
+              return isMember ? (
+              <option key={club.id} value={club.id}>{club.name}</option>) : null;
+            })}
           </select>
         </div>
 

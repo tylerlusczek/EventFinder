@@ -203,7 +203,7 @@ app.delete("/events/:id", authenticateToken, (req, res) => {
   db.query("SELECT created_by FROM Event WHERE event_id = ?", [id], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     if (results.length === 0) return res.status(404).json({ error: "Event not found" });
-    if (results[0].created_by !== req.user.id) {
+    if (results[0].created_by !== req.user.id && !req.user.isAdmin) {
       return res.status(403).json({ error: "You may only delete your own events" });
     }
 
