@@ -1,0 +1,4 @@
+Roles:
+- Completed sections 1 & 4
+- Developer
+- Restructered folder structure
