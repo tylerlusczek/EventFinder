@@ -1,0 +1,4 @@
+Roles:
+- Helped set up the front end with React
+- Helped with the authentication methods and database
+- Reformatted some text in the report
