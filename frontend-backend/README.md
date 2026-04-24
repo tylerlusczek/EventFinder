@@ -31,7 +31,7 @@ Before moving on, make sure it is running and take note of the port and password
 ### **4. Database Connection**
 Navigate to the server folder
 ```bash
-cd ../db/server
+cd ../backend
 ```
 and do the following:
 ```bash
@@ -41,7 +41,7 @@ npm install express mysql2 cors
 
 Now edit server.js with your own MySQL credentials by using environmental variables.
 
-First when in the db/server folder, create a new file named '.env'
+First when in the backend folder, create a new file named '.env'
 Inside '.env' create the following varaibles and replace everything after the '=' with your own information
 
 DB_HOST=localhost
@@ -67,7 +67,7 @@ node server.js
 ### **4. Frontend Connection**
 Open another tab and
 ```bash
-cd ../frontend-backend/my-react-app
+cd ../frontend
 npm install
 npm run dev
 ```
