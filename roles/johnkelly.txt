@@ -1,0 +1,4 @@
+Roles:
+- Helped in section 1 and 4 in the report
+- Helped develop frontend and backend
+- Overhauled UI to be more consistent and remove bugs
