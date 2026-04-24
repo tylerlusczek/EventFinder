@@ -204,3 +204,5 @@ INSERT INTO EventRegistration (student_id, event_id, rsvp_status, registered_at)
 (19,19,'Interested','2024-03-26 18:00:00'),
 (20,20,'Going','2024-03-26 19:00:00');
 
+
+UPDATE Users SET password_hash = '$2b$10$WxDMc7cyefXXozocRagSZef5xxGbXA7YW7PLdJVQHA8dOp.ptVl76' WHERE user_id = 1;
