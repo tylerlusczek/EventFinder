@@ -1,0 +1,4 @@
+Roles:
+- Completed sections 2, 5, & 6 in the report
+- Helped develop the frontend of the website
+- Helped develop the backend of the website with SQL queries
