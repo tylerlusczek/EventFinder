@@ -1,4 +1,4 @@
 Roles:
-- Helped set up the front end with React
+- Helped set up the front end with React (Making tabs, css, multiple pages)
 - Helped with the authentication methods and database
 - Reformatted some text in the report
