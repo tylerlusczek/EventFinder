@@ -178,34 +178,31 @@ INSERT INTO Membership (student_id, org_id, join_date, role, status) VALUES
 (20,10,'2024-02-20','Member','Active');
 
 
-INSERT INTO Event (org_id, title, description, location, start_time, end_time, capacity, visibility) VALUES
-(1,'Hackathon','Coding event','Room A','2024-04-01 10:00:00','2024-04-01 18:00:00',50,'Public'),
-(2,'Startup Talk','Entrepreneurship','Room B','2024-04-02 11:00:00','2024-04-02 13:00:00',40,'Public'),
-(3,'Art Expo','Showcase art','Gallery','2024-04-03 12:00:00','2024-04-03 16:00:00',30,'Public'),
-(4,'Concert','Live music','Hall','2024-04-04 18:00:00','2024-04-04 21:00:00',100,'Public'),
-(5,'Football Match','Sports event','Field','2024-04-05 15:00:00','2024-04-05 17:00:00',60,'Public'),
-(6,'Debate Night','Discussion','Room C','2024-04-06 17:00:00','2024-04-06 19:00:00',25,'Public'),
-(7,'Gaming Night','Games','Room D','2024-04-07 19:00:00','2024-04-07 22:00:00',35,'Public'),
-(8,'Charity Drive','Help community','Lobby','2024-04-08 10:00:00','2024-04-08 14:00:00',50,'Public'),
-(9,'Science Fair','Projects','Lab','2024-04-09 09:00:00','2024-04-09 15:00:00',45,'Public'),
-(10,'Movie Night','Film screening','Auditorium','2024-04-10 20:00:00','2024-04-10 22:00:00',80,'Public'),
+INSERT INTO Event (org_id, title, description, location, start_time, end_time, capacity, visibility, created_by) VALUES
+(1,'Hackathon','Coding event','Room A','2024-04-01 10:00:00','2024-04-01 18:00:00',50,'Public', 11),
+(2,'Startup Talk','Entrepreneurship','Room B','2024-04-02 11:00:00','2024-04-02 13:00:00',40,'Public', 12),
+(3,'Art Expo','Showcase art','Gallery','2024-04-03 12:00:00','2024-04-03 16:00:00',30,'Public', 13),
+(4,'Concert','Live music','Hall','2024-04-04 18:00:00','2024-04-04 21:00:00',100,'Public', 4),
+(5,'Football Match','Sports event','Field','2024-04-05 15:00:00','2024-04-05 17:00:00',60,'Public', 5),
+(6,'Debate Night','Discussion','Room C','2024-04-06 17:00:00','2024-04-06 19:00:00',25,'Public', 6),
+(7,'Gaming Night','Games','Room D','2024-04-07 19:00:00','2024-04-07 22:00:00',35,'Public', 7),
+(8,'Charity Drive','Help community','Lobby','2024-04-08 10:00:00','2024-04-08 14:00:00',50,'Public', 8),
+(9,'Science Fair','Projects','Lab','2024-04-09 09:00:00','2024-04-09 15:00:00',45,'Public', 9),
+(10,'Movie Night','Film screening','Auditorium','2024-04-10 20:00:00','2024-04-10 22:00:00',80,'Public', 10),
 
-(1,'AI Workshop','Learn AI','Room A','2024-04-11 10:00:00','2024-04-11 12:00:00',40,'Public'),
-(2,'Marketing 101','Basics','Room B','2024-04-12 11:00:00','2024-04-12 13:00:00',30,'Public'),
-(3,'Painting Class','Art skills','Studio','2024-04-13 14:00:00','2024-04-13 16:00:00',20,'Public'),
-(4,'Band Practice','Music','Hall','2024-04-14 18:00:00','2024-04-14 20:00:00',25,'Public'),
-(5,'Basketball Game','Sports','Court','2024-04-15 16:00:00','2024-04-15 18:00:00',60,'Public'),
-(6,'Policy Debate','Debate','Room C','2024-04-16 17:00:00','2024-04-16 19:00:00',20,'Public'),
-(7,'Esports Tournament','Gaming','Room D','2024-04-17 19:00:00','2024-04-17 22:00:00',40,'Public'),
-(8,'Food Drive','Volunteer','Lobby','2024-04-18 10:00:00','2024-04-18 14:00:00',50,'Public'),
-(9,'Robotics Demo','Science','Lab','2024-04-19 09:00:00','2024-04-19 12:00:00',35,'Public'),
-(10,'Film Discussion','Movies','Auditorium','2024-04-20 20:00:00','2024-04-20 22:00:00',60,'Public');
+(1,'AI Workshop','Learn AI','Room A','2024-04-11 10:00:00','2024-04-11 12:00:00',40,'Public', 11),
+(2,'Marketing 101','Basics','Room B','2024-04-12 11:00:00','2024-04-12 13:00:00',30,'Public', 12),
+(3,'Painting Class','Art skills','Studio','2024-04-13 14:00:00','2024-04-13 16:00:00',20,'Public', 13),
+(4,'Band Practice','Music','Hall','2024-04-14 18:00:00','2024-04-14 20:00:00',25,'Public', 4),
+(5,'Basketball Game','Sports','Court','2024-04-15 16:00:00','2024-04-15 18:00:00',60,'Public', 5),
+(6,'Policy Debate','Debate','Room C','2024-04-16 17:00:00','2024-04-16 19:00:00',20,'Public', 6),
+(7,'Esports Tournament','Gaming','Room D','2024-04-17 19:00:00','2024-04-17 22:00:00',40,'Public', 7),
+(8,'Food Drive','Volunteer','Lobby','2024-04-18 10:00:00','2024-04-18 14:00:00',50,'Public', 8),
+(9,'Robotics Demo','Science','Lab','2024-04-19 09:00:00','2024-04-19 12:00:00',35,'Public', 9),
+(10,'Film Discussion','Movies','Auditorium','2024-04-20 20:00:00','2024-04-20 22:00:00',60,'Public', 10);
 
 
 INSERT INTO EventRegistration (student_id, event_id, rsvp_status, registered_at) VALUES
-(1,1,'Going','2024-03-25 10:00:00'),
-(2,2,'Going','2024-03-25 11:00:00'),
-(3,3,'Interested','2024-03-25 12:00:00'),
 (4,4,'Going','2024-03-25 13:00:00'),
 (5,5,'Going','2024-03-25 14:00:00'),
 (6,6,'Interested','2024-03-25 15:00:00'),
