@@ -1,3 +1,46 @@
+# **Event Finder** #
+
+## **Project Description** ##
+
+Event Finder is a web-based campus event management system built around the problem of fragmented communication between students and campus organizations. On many campuses, event information is spread across multiple platforms such as GroupMe, Slack, or informal announcements, which can make it difficult for students to know where to look for opportunities and easy for organizations to miss potential attendees. This creates a need for a centralized, structured, and reliable system that stores campus activity information in one place. Event Finder addresses this problem by using a database-driven application that models users, organizations, events, memberships, and registrations in a consistent way so campus activities can be easier to manage and access.
+
+## **Features** ##
+
+Event Finder has all the following features:
+- Create clubs for specific concentrations
+- Create events that fit club description
+- RSVP to events that interest each user
+- Change passwords
+- Encrypted password
+- Admins can add/edit/delete any club/event/user
+
+## **Screenshots** ##
+
+Here are some screenshots from our application:
+
+
+<figure>
+  <figcaption>Login Screen</figcaption>
+</figure>
+<figure>
+  <img src="docs/Login_Screen.png" alt="Login Page" width="300">
+</figure>
+
+<figure>
+  <figcaption>Club Screen</figcaption>
+</figure>
+<figure>
+  <img src="docs/Club_Screen.png" alt="Club Page" width="300">
+</figure>
+
+<figure>
+  <figcaption>Event Screen</figcaption>
+</figure>
+<figure>
+  <img src="docs/Events_Screen.png" alt="Event Page" width="300">
+</figure>
+
+
 ## **Setup & Installation**
 
 ### **1. Clone the repository**
@@ -29,9 +72,9 @@ After you install and make a SQL Database, use the file in db/event_finder.sql t
 Before moving on, make sure it is running and take note of the port and password
 
 ### **4. Database Connection**
-Navigate to the server folder
+Navigate to the backend folder
 ```bash
-cd ../db/server
+cd ../backend
 ```
 and do the following:
 ```bash
@@ -39,9 +82,9 @@ npm init -y
 npm install express mysql2 cors
 ```
 
-Now edit server.js with your own MySQL credentials by using environmental variables.
+Now, need to add environmental variables so server.js works with your own MySQL credentials
 
-First when in the db/server folder, create a new file named '.env'
+First when in the backend folder, create a new file named '.env'
 Inside '.env' create the following varaibles and replace everything after the '=' with your own information
 
 DB_HOST=localhost
@@ -51,7 +94,7 @@ DB=eventfinder
 DB_PORT=3307
 JWT_SECRET=secret
 
-where you replace the text inside the "" with your actual user, pass, and database name.
+where you replace the text with your actual user, pass, and database name.
 
 NOTE: Make sure the .env is in the .gitignore so no one else can see it
 
@@ -64,12 +107,20 @@ node server.js
 
 (Can run http://localhost:5000/events in a tab to see if any data shows up to see if it is working)
 
-### **4. Frontend Connection**
+### **5. Frontend Connection**
 Open another tab and
 ```bash
-cd ../frontend-backend/my-react-app
+cd ../frontend
 npm install
 npm run dev
 ```
 
-and now everything should start with the data manipulation working
+and now everything should start with the data manipulation working.
+
+### **6. Logging In**
+
+NOTE: To get started take a look at event_finder.sql to know what emails you can use. For passwords, all the admins and students have the same password below:
+```bash
+admin password: "admin123"
+student password: "password"
+```
