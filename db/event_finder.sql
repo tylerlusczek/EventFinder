@@ -96,6 +96,29 @@ INSERT INTO Users (email, first_name, last_name) VALUES
 ('sam19@example.com','Sam','Rodriguez'),
 ('tina20@example.com','Tina','Lewis');
 
+UPDATE Users SET password_hash = '$2b$10$WxDMc7cyefXXozocRagSZef5xxGbXA7YW7PLdJVQHA8dOp.ptVl76' WHERE user_id = 1;
+UPDATE Users SET password_hash = '$2b$10$WxDMc7cyefXXozocRagSZef5xxGbXA7YW7PLdJVQHA8dOp.ptVl76' WHERE user_id = 2;
+UPDATE Users SET password_hash = '$2b$10$WxDMc7cyefXXozocRagSZef5xxGbXA7YW7PLdJVQHA8dOp.ptVl76' WHERE user_id = 3;
+
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 4;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 5;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 6;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 7;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 8;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 9;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 10;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 11;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 12;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 13;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 14;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 15;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 16;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 17;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 18;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 19;
+UPDATE Users SET password_hash = '$2b$10$Hkj72LzYOPfrKGflPn4x6.YqwzCxc4.910Wp7EEtiid6llcK/l.wa' WHERE user_id = 20;
+
+
 
 INSERT INTO Administrator (user_id, admin_level) VALUES
 (1, 'Super'),
@@ -136,9 +159,6 @@ INSERT INTO OrganizationClub (org_name, description, category, created_at) VALUE
 
 
 INSERT INTO Membership (student_id, org_id, join_date, role, status) VALUES
-(1,1,'2024-02-01','Member','Active'),
-(2,2,'2024-02-02','Member','Active'),
-(3,3,'2024-02-03','Member','Active'),
 (4,4,'2024-02-04','Member','Active'),
 (5,5,'2024-02-05','Member','Active'),
 (6,6,'2024-02-06','Member','Active'),
@@ -203,6 +223,3 @@ INSERT INTO EventRegistration (student_id, event_id, rsvp_status, registered_at)
 (18,18,'Going','2024-03-26 17:00:00'),
 (19,19,'Interested','2024-03-26 18:00:00'),
 (20,20,'Going','2024-03-26 19:00:00');
-
-
-UPDATE Users SET password_hash = '$2b$10$WxDMc7cyefXXozocRagSZef5xxGbXA7YW7PLdJVQHA8dOp.ptVl76' WHERE user_id = 1;
